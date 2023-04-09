@@ -144,18 +144,22 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 		mGameWorld->AddObject(explosion);
 		if (oldAsteroid->GetSplitHealth() > 0)
 		{
-			Animation* anim_ptr = AnimationManager::GetInstance().GetAnimationByName("asteroid1");
-			shared_ptr<Sprite> asteroid_sprite
-				= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
-			asteroid_sprite->SetLoopAnimation(true);
-			shared_ptr<Asteroid> asteroid = make_shared<Asteroid>();
-			asteroid->SetBoundingShape(make_shared<BoundingSphere>(asteroid->GetThisPtr(), 5.0f));
-			asteroid->SetSprite(asteroid_sprite);
-			asteroid->SetScale(0.05f + 0.1f * asteroid->GetSplitHealth());
-			asteroid->SetPosition(oldAsteroid->GetPosition());
-			asteroid->SetSplitHealth(oldAsteroid->GetSplitHealth() - 1);
-			mGameWorld->AddObject(static_pointer_cast<GameObject>(asteroid));
-			mAsteroidCount++;
+			for (int i = 2; i > 0; i--)
+			{
+				Animation* anim_ptr = AnimationManager::GetInstance().GetAnimationByName("asteroid1");
+				shared_ptr<Sprite> asteroid_sprite
+					= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
+				asteroid_sprite->SetLoopAnimation(true);
+				shared_ptr<Asteroid> asteroid = make_shared<Asteroid>();
+				asteroid->SetSplitHealth(oldAsteroid->GetSplitHealth() - 1);
+				asteroid->SetBoundingShape(make_shared<BoundingSphere>(asteroid->GetThisPtr(), 1.0f + 5.0f * asteroid->GetSplitHealth()));
+				asteroid->SetSprite(asteroid_sprite);
+				asteroid->SetScale(0.05f + 0.1f * asteroid->GetSplitHealth());
+				asteroid->SetPosition(oldAsteroid->GetPosition());
+
+				mGameWorld->AddObject(static_pointer_cast<GameObject>(asteroid));
+				mAsteroidCount++;
+			}
 		}
 		
 		mAsteroidCount--;
@@ -221,7 +225,7 @@ void Asteroids::CreateAsteroids(const uint num_asteroids)
 			= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
 		asteroid_sprite->SetLoopAnimation(true);
 		shared_ptr<Asteroid> asteroid = make_shared<Asteroid>();
-		asteroid->SetBoundingShape(make_shared<BoundingSphere>(asteroid->GetThisPtr(), 5.0f));
+		asteroid->SetBoundingShape(make_shared<BoundingSphere>(asteroid->GetThisPtr(), 1.0f + 5.0f * asteroid->GetSplitHealth()));
 		asteroid->SetSprite(asteroid_sprite);
 		asteroid->SetScale(0.05f + 0.1f * asteroid->GetSplitHealth());
 		mGameWorld->AddObject(static_pointer_cast<GameObject>(asteroid));

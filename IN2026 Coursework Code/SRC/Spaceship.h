@@ -29,6 +29,8 @@ public:
 
 private:
 	float mThrust;
+	bool poweredUp = true;
+	float powerUpTime = 3000;
 
 	shared_ptr<Shape> mSpaceshipShape;
 	shared_ptr<Shape> mThrusterShape;
