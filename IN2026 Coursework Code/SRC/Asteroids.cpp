@@ -149,9 +149,9 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 				= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
 			asteroid_sprite->SetLoopAnimation(true);
 			shared_ptr<Asteroid> asteroid = make_shared<Asteroid>();
-			asteroid->SetBoundingShape(make_shared<BoundingSphere>(asteroid->GetThisPtr(), 10.0f));
+			asteroid->SetBoundingShape(make_shared<BoundingSphere>(asteroid->GetThisPtr(), 5.0f));
 			asteroid->SetSprite(asteroid_sprite);
-			asteroid->SetScale(0.2f);
+			asteroid->SetScale(0.05f + 0.1f * asteroid->GetSplitHealth());
 			asteroid->SetPosition(oldAsteroid->GetPosition());
 			asteroid->SetSplitHealth(oldAsteroid->GetSplitHealth() - 1);
 			mGameWorld->AddObject(static_pointer_cast<GameObject>(asteroid));
@@ -220,11 +220,11 @@ void Asteroids::CreateAsteroids(const uint num_asteroids)
 		shared_ptr<Sprite> asteroid_sprite
 			= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
 		asteroid_sprite->SetLoopAnimation(true);
-		shared_ptr<GameObject> asteroid = make_shared<Asteroid>();
-		asteroid->SetBoundingShape(make_shared<BoundingSphere>(asteroid->GetThisPtr(), 10.0f));
+		shared_ptr<Asteroid> asteroid = make_shared<Asteroid>();
+		asteroid->SetBoundingShape(make_shared<BoundingSphere>(asteroid->GetThisPtr(), 5.0f));
 		asteroid->SetSprite(asteroid_sprite);
-		asteroid->SetScale(0.2f);
-		mGameWorld->AddObject(asteroid);
+		asteroid->SetScale(0.05f + 0.1f * asteroid->GetSplitHealth());
+		mGameWorld->AddObject(static_pointer_cast<GameObject>(asteroid));
 	}
 }
 
