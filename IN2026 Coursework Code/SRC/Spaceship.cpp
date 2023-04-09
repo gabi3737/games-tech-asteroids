@@ -147,3 +147,8 @@ void Spaceship::OnCollision(const GameObjectList &objects)
 {
 	mWorld->FlagForRemoval(GetThisPtr());
 }
+
+void Spaceship::SetPowerUpTime(float t)
+{
+	powerUpTime = t;
+}

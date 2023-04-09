@@ -276,6 +276,10 @@ void Asteroids::OnScoreChanged(int score)
 	// Get the score message as a string
 	std::string score_msg = msg_stream.str();
 	mScoreLabel->SetText(score_msg);
+	if (score % 500 == 0)
+	{
+		mSpaceship->SetPowerUpTime(3000);
+	}
 }
 
 void Asteroids::OnPlayerKilled(int lives_left)
