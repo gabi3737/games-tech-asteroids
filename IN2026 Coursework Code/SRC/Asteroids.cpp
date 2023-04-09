@@ -136,10 +136,28 @@ void Asteroids::OnObjectRemoved(GameWorld* world, shared_ptr<GameObject> object)
 {
 	if (object->GetType() == GameObjectType("Asteroid"))
 	{
+		//cast destroyed object (if asteroid) into Asteroid shared pointer
+		shared_ptr<Asteroid> oldAsteroid = dynamic_pointer_cast<Asteroid>(object);
 		shared_ptr<GameObject> explosion = CreateExplosion();
 		explosion->SetPosition(object->GetPosition());
 		explosion->SetRotation(object->GetRotation());
 		mGameWorld->AddObject(explosion);
+		if (oldAsteroid->GetSplitHealth() > 0)
+		{
+			Animation* anim_ptr = AnimationManager::GetInstance().GetAnimationByName("asteroid1");
+			shared_ptr<Sprite> asteroid_sprite
+				= make_shared<Sprite>(anim_ptr->GetWidth(), anim_ptr->GetHeight(), anim_ptr);
+			asteroid_sprite->SetLoopAnimation(true);
+			shared_ptr<Asteroid> asteroid = make_shared<Asteroid>();
+			asteroid->SetBoundingShape(make_shared<BoundingSphere>(asteroid->GetThisPtr(), 10.0f));
+			asteroid->SetSprite(asteroid_sprite);
+			asteroid->SetScale(0.2f);
+			asteroid->SetPosition(oldAsteroid->GetPosition());
+			asteroid->SetSplitHealth(oldAsteroid->GetSplitHealth() - 1);
+			mGameWorld->AddObject(static_pointer_cast<GameObject>(asteroid));
+			mAsteroidCount++;
+		}
+		
 		mAsteroidCount--;
 		if (mAsteroidCount <= 0) 
 		{ 

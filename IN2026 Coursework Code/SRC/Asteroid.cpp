@@ -5,6 +5,7 @@
 
 Asteroid::Asteroid(void) : GameObject("Asteroid")
 {
+
 	mAngle = rand() % 360;
 	mRotation = 0; // rand() % 90;
 	mPosition.x = rand() / 2;
@@ -13,6 +14,8 @@ Asteroid::Asteroid(void) : GameObject("Asteroid")
 	mVelocity.x = 10.0 * cos(DEG2RAD*mAngle);
 	mVelocity.y = 10.0 * sin(DEG2RAD*mAngle);
 	mVelocity.z = 0.0;
+	splitHealth = rand() % 3;
+	
 }
 
 Asteroid::~Asteroid(void)
@@ -30,4 +33,14 @@ bool Asteroid::CollisionTest(shared_ptr<GameObject> o)
 void Asteroid::OnCollision(const GameObjectList& objects)
 {
 	mWorld->FlagForRemoval(GetThisPtr());
+}
+
+int Asteroid::GetSplitHealth()
+{
+	return splitHealth;
+}
+
+void Asteroid::SetSplitHealth(int n)
+{
+	splitHealth = n;
 }
